@@ -21,6 +21,7 @@ puts ""
 #Import the different modules needed
 require './Gene.rb'
 require './Protein.rb'
+require './PPI.rb'
 require './InteractionNetwork.rb'
 require 'net/http'
 
@@ -59,7 +60,8 @@ end
 #-----------------------------------------------------------------
  
 def write_record(networks, filename)
-  #Class method to record the report of the members of an InteractionNetwork, together with the KEGG/GO functional annotations of those interacting members
+  
+  # Routine to write the results in an output file
   
   if File.exists?(filename) 
     File.delete(filename) # We remove the file in case it exits to update it
@@ -97,6 +99,9 @@ def write_record(networks, filename)
     fnr.puts "\n-----------------------------------------------\n"
   end
   
+  # Notice that we are not outputing the proteins interacting in each network but we could if we want
+  # The networks with 2 nodes, may not be considered as networks, we could also filter that
+  
 end
   
 #-----------------------------------------------------------------
@@ -111,7 +116,7 @@ $MAX_LEVEL = 2
 # deeper relationships.
 
 
-
+puts "Obtaining all interaccting proteins deeping #{$MAX_LEVEL.to_s} levels ..."
 Gene.load_from_file(ARGV[0])
 # We create the Gene objects from the genes gived in the file.
 # This will lead to the creation of Protein objects that will propagate generating Protein
@@ -121,8 +126,10 @@ Gene.load_from_file(ARGV[0])
 
 $PPIS = PPI.all_ppis
 # We retrieve this list with all the interacting proteins 
+puts "DONE!\n\n"
 
 
+puts "Obtaining networks ..."
 Protein.all_prots_withintact.each do |id, prot_object|
   
   if not prot_object.network
@@ -134,8 +141,10 @@ Protein.all_prots_withintact.each do |id, prot_object|
   end
   
 end
+puts "DONE!\n\n"
 
-
+puts "Recording report..."
 write_record(InteractionNetwork.all_networks, ARGV[1])
 # Output the result in a file.
+puts "TASKS COMPLETED, output #{ARGV[1]} recorded!"
   
