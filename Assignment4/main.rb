@@ -190,20 +190,20 @@ system("makeblastdb -in '#{target_file}' -dbtype #{type_target_file} -out ./Data
 
 # We create factories depending on the types of the files
 if type_search_file == 'nucl' and type_target_file == 'nucl' # Both files contain genomes
-    factory_search = Bio::Blast.local('blastn', "./Databases/#{db_search.to_s}", '-e 1e-6')
-    factory_target = Bio::Blast.local('blastn', "./Databases/#{db_target.to_s}", '-e 1e-6')
+    factory_search = Bio::Blast.local('blastn', "./Databases/#{db_search.to_s}")
+    factory_target = Bio::Blast.local('blastn', "./Databases/#{db_target.to_s}")
 
 elsif type_search_file == 'nucl' and type_target_file == 'prot' # First file contains a genome and the second one a proteome
-    factory_search = Bio::Blast.local('tblastn', "./Databases/#{db_search.to_s}", '-e 1e-6')
-    factory_target = Bio::Blast.local('blastx', "./Databases/#{db_target.to_s}", '-e 1e-6')
+    factory_search = Bio::Blast.local('tblastn', "./Databases/#{db_search.to_s}")
+    factory_target = Bio::Blast.local('blastx', "./Databases/#{db_target.to_s}")
     
 elsif type_search_file == 'prot' and type_target_file == 'nucl' # First file contains a proteome and the second one a genome
-    factory_search = Bio::Blast.local('blastx', "./Databases/#{db_search.to_s}", '-e 1e-6')
-    factory_target = Bio::Blast.local('tblastn', "./Databases/#{db_target.to_s}", '-e 1e-6')
+    factory_search = Bio::Blast.local('blastx', "./Databases/#{db_search.to_s}")
+    factory_target = Bio::Blast.local('tblastn', "./Databases/#{db_target.to_s}")
 
 elsif type_search_file == 'prot' and type_target_file == 'p' # Both files contain proteomes
-    factory_search = Bio::Blast.local('blastp', "./Databases/#{db_search.to_s}", '-e 1e-6')
-    factory_target = Bio::Blast.local('blastp', "./Databases/#{db_target.to_s}", '-e 1e-6')
+    factory_search = Bio::Blast.local('blastp', "./Databases/#{db_search.to_s}")
+    factory_target = Bio::Blast.local('blastp', "./Databases/#{db_target.to_s}")
 
 end
 
